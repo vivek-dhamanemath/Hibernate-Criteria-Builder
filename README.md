@@ -21,6 +21,17 @@ This project demonstrates the use of the `CriteriaBuilder` interface in Hibernat
      - `from()`: Fetches all records from the respective table and stores them in a root element.
    - **Execution**: Use the `Query` interface to execute the constructed query.
 
+   ```java
+   // Example of CriteriaQuery
+   Session session = sessionFactory.openSession();
+   CriteriaBuilder cb = session.getCriteriaBuilder();
+   CriteriaQuery<Employee> cq = cb.createQuery(Employee.class);
+   Root<Employee> root = cq.from(Employee.class);
+   cq.select(root);
+   Query<Employee> query = session.createQuery(cq);
+   List<Employee> employees = query.getResultList();
+   ```
+
 2. **CriteriaUpdate**
    - **Purpose**: Used for updating data in the database.
    - **Creation**: Use `createCriteriaUpdate()` method from `CriteriaBuilder`.
@@ -29,12 +40,35 @@ This project demonstrates the use of the `CriteriaBuilder` interface in Hibernat
      - `set()`: Sets the values for columns to be updated.
    - **Execution**: Use the `Query` interface to execute the constructed query using `executeUpdate()` method.
 
+   ```java
+   // Example of CriteriaUpdate
+   Session session = sessionFactory.openSession();
+   CriteriaBuilder cb = session.getCriteriaBuilder();
+   CriteriaUpdate<Employee> cu = cb.createCriteriaUpdate(Employee.class);
+   Root<Employee> root = cu.from(Employee.class);
+   cu.set("salary", 50000);
+   cu.where(cb.equal(root.get("id"), 1));
+   Query query = session.createQuery(cu);
+   int rowsUpdated = query.executeUpdate();
+   ```
+
 3. **CriteriaDelete**
    - **Purpose**: Used for deleting data from the database.
    - **Creation**: Use `createCriteriaDelete()` method from `CriteriaBuilder`.
    - **Methods**: 
      - `from()`: Fetches all records from the respective table and stores them in a root element.
    - **Execution**: Use the `Query` interface to execute the constructed query using `executeUpdate()` method.
+
+   ```java
+   // Example of CriteriaDelete
+   Session session = sessionFactory.openSession();
+   CriteriaBuilder cb = session.getCriteriaBuilder();
+   CriteriaDelete<Employee> cd = cb.createCriteriaDelete(Employee.class);
+   Root<Employee> root = cd.from(Employee.class);
+   cd.where(cb.equal(root.get("id"), 1));
+   Query query = session.createQuery(cd);
+   int rowsDeleted = query.executeUpdate();
+   ```
 
 ## Notes
 
